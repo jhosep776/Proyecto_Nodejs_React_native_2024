@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
-
+scroll:{
+  backgroundColor: 'black',
+},
   // login
   container: {
     flex: 1,
@@ -25,7 +27,23 @@ export const styles = StyleSheet.create({
   subtitulo: {
     fontSize: 20,
     color: 'gray',
+    paddingBottom: 10
+
+
+  },
+  subtitulov2: {
+    marginTop: 80,
+    fontSize: 20,
+    color: 'gray',
     paddingBottom: 30
+
+
+  },
+  subtitulov3: {
+    marginTop: 20,
+    fontSize: 20,
+    color: 'gray',
+    paddingBottom: 5
 
 
   },
@@ -39,6 +57,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff'
 
   },
+   
 
   button_L: {
     marginTop: 50,
@@ -47,6 +66,16 @@ export const styles = StyleSheet.create({
     height: 50,
     width: '40%',
     backgroundColor: '#00bfff'
+
+  },
+  button_L2: {
+
+    paddingTop: 15,
+    borderRadius: 30,
+    marginBottom: 30,
+    height: 50,
+    width: '40%',
+    backgroundColor: 'red'
 
   },
   text_bL: {
@@ -93,7 +122,7 @@ export const styles = StyleSheet.create({
   Home_input: {
     marginTop: 10,
     marginBottom: 10,
-    padding:10,
+    padding: 10,
     height: 45,
     backgroundColor: 'white',
     borderRadius: 10,
@@ -299,6 +328,13 @@ export const styles = StyleSheet.create({
   video_list_item_playing: {
     backgroundColor: 'green', // Por ejemplo, resalta en verde cuando el video está reproduciéndose
   },
+  //anuncios
+  adContainer: {
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  }
 
 
 

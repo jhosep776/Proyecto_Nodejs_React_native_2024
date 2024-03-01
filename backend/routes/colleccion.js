@@ -30,9 +30,9 @@ const uploads_vide = multer({
 })
 
 router.post("/registrar", colleccion.save_colleccion);
-router.get("/listar/:opcional?", colleccion.list_colleccion);
+router.get("/listar/:opcional?", check.auth,colleccion.list_colleccion);
 router.post("/registrar", colleccion.save_colleccion);
-router.get("/buscar_capitulos/:id", colleccion.list_videos_id);
+router.get("/buscar_capitulos/:id",check.auth, colleccion.list_videos_id);
 
 
 router.post("/uploads_coll/:id", [uploads.single("file")], colleccion.upload_colleccion);

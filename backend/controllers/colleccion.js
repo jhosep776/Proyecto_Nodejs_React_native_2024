@@ -3,7 +3,7 @@ const path = require("path")
 
 const colleccions = require('../model/colleccion')
 const videos = require('../model/videos')
-
+const premium = require("../model/premium")
 const save_colleccion = (req, res) => {
 
 
@@ -180,10 +180,19 @@ const save_videos = (req, res) => {
 
 
 }
-const list_videos_id = (req, res) => {
-
+const list_videos_id = async(req, res) => {
     const colleccion_id = req.params.id
-    videos.find({ colleccion: colleccion_id })
+    let userIdentity = req.user;
+
+    const user_prem_active = await premium.findOne({
+        $and: [
+            { user: userIdentity.id },
+            { estado: "1" } // Agrega más condiciones si es necesario
+        ]
+    });
+
+    if(user_prem_active){
+        videos.find({ colleccion: colleccion_id })
         .select('-created_at -__v')
         .sort({ numero: 1 })
         .populate('colleccion')
@@ -222,6 +231,12 @@ const list_videos_id = (req, res) => {
             })
 
         });
+    }else{
+        console.log("El usuarioo tiene premium ")
+    }
+
+    
+    
 
 
 

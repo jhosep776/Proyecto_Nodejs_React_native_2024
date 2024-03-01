@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '../Client/Api';
-
+ 
 const AUTH_STORAGE_KEY = '@token';
+ 
 
 // Función para guardar el token JWT en AsyncStorage
 const guardarToken = async (token) => {
@@ -25,10 +26,17 @@ const obtenerToken = async () => {
 // Función para configurar el token JWT en Axios
 const configurarTokenEnAxios = (token) => {
     if (token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        axios.defaults.headers.common['Authorization'] = `${token}`;
     } else {
         delete axios.defaults.headers.common['Authorization'];
     }
 };
 
-export { guardarToken, obtenerToken, configurarTokenEnAxios };
+const eliminarToken = async () => {
+    try {
+        await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
+    } catch (error) {
+        console.error('Error al eliminar el token:', error);
+    }
+};
+export { guardarToken, obtenerToken, configurarTokenEnAxios ,eliminarToken };

@@ -3,40 +3,51 @@ import { useNavigation } from '@react-navigation/native'
 import { StatusBar, TextInput, ImageBackground, Image, FlatList, View, Text, Pressable } from 'react-native';
 import { styles } from '../styles'
 import axios from '../Client/Api'; // Importa Axios con la configuración de URL base
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { configurarTokenEnAxios, guardarToken, obtenerToken } from '../Client/Auth'
+import AlertModal from '../components/modal'; // Importa el componente del modal de alerta
 
 export default HomeScreen = () => {
     const API_URL = '/colleccion/listar'; // Ruta relativa de la API
     const API_URL2 = '/colleccion/media_coll/';
+    const API_URL3 = '/user/premium/list_id';
     const navigation = useNavigation();
-    
+
     const [data, setData] = useState([]); // Datos obtenidos de la API
     const [filteredData, setFilteredData] = useState([]); // Datos filtrados en función del texto ingresado
     const [text, setText] = useState(''); // Texto ingresado por el usuario
+    //modal
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const handleCloseModal = () => {
+        setModalVisible(false);
 
+    };
+    /*
     useEffect(() => {
         fetchData(); // Cargar datos iniciales al montar el componente
     }, []);
-
+*/
     useEffect(() => {
         filterData(text); // Filtrar datos cada vez que el texto cambie
     }, [text]);
 
     const getImageUrl = (fileName) => {
         const imageUrl = `${axios.defaults.baseURL}${API_URL2}${fileName}`;;
-       console.log('Imagen URL:', imageUrl);
+        //   console.log('Imagen URL:', imageUrl);
         return imageUrl;
     };
-
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(API_URL);
-           
-            setData(response.data.collecion);
-           
-        } catch (error) {
-           // console('Error fetching data: ', error);
-        }
-    };
+    /*
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(API_URL);
+    
+                setData(response.data.collecion);
+    
+            } catch (error) {
+                // console('Error fetching data: ', error);
+            }
+        };*/
 
     const filterData = async (searchText) => {
         try {
@@ -44,12 +55,24 @@ export default HomeScreen = () => {
             if (searchText.trim() !== '') {
                 url += `/${searchText}`; // Agregar el texto como parte de la URL si no está vacío
             }
+            const storedToken = await obtenerToken();
+
+            if (storedToken) {
+                // console.log('Token usado en home correctamente:', storedToken);
+                configurarTokenEnAxios(storedToken);
+            } else {
+                console.log('No se pudo guardar el token.');
+            }
             const response = await axios.get(url); // Hacer la solicitud con la URL modificada
             setFilteredData(response.data.collecion);
+
         } catch (error) {
-          //  console.error('Error filtering data: ', error);
+            console.info('No hay datos para la busqueda ', error);
         }
     };
+
+
+
 
     const renderItem = ({ item }) => (
         <View style={styles.item}>
@@ -74,9 +97,25 @@ export default HomeScreen = () => {
         </View>
     );
 
-    const Stack_navigation = (itemId) => {
-        navigation.navigate("Stack", { itemId: itemId });
+
+    const Stack_navigation = async (itemId) => {
+
+        const response = await axios.get(`${axios.defaults.baseURL}${API_URL3}`);
+        const storedToken = await obtenerToken();
+        configurarTokenEnAxios(storedToken);
+
+
+        console.log(storedToken)
+        console.log("respuesta" + response.data.result)
+        if (response.data.status == "success"  ) {
+            navigation.navigate("Stack", { itemId: itemId });
+        } else {
+            setModalMessage("No tiene el premium activo");
+            setModalVisible(true);
+        }
+
     };
+
 
     return (
         <>
@@ -94,6 +133,14 @@ export default HomeScreen = () => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item._id}
             />
+
+
+            <AlertModal
+                visible={modalVisible}
+                message={modalMessage} // Mensaje que muestra el modal
+                onClose={handleCloseModal} // Función que se ejecuta cuando se cierra el modal
+            />
+
         </>
     );
 };

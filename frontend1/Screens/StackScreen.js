@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StatusBar, View, StyleSheet, Button, Text, Pressable } from 'react-native'
 import { Video, ResizeMode } from 'expo-av';
-
+import { configurarTokenEnAxios, guardarToken, obtenerToken } from '../Client/Auth'
 import { styles } from '../styles'
-
+import axios from '../Client/Api'; // Importa Axios con la configuración de URL base
 export default StackScreen = ({ route }) => {
   const { itemId } = route.params;
   const API_URL = `http://192.168.100.15:3900/api/colleccion/buscar_capitulos/${itemId}`;
@@ -25,18 +25,23 @@ export default StackScreen = ({ route }) => {
       setShouldPlay(true); // Comienza la reproducción automáticamente al cambiar el video
     }
   }, [currentVideoIndex]);
-
+ 
   const fetchVideos = async () => {
     try {
-      const response = await fetch(API_URL);
-      const json = await response.json();
-      if (json.status === "success") {
-        setVideos(json.videos);
+      // Obtener el token almacenado
+      const token = await obtenerToken();
+
+      // Configurar el token en Axios
+      configurarTokenEnAxios(token);
+      const response = await axios.get(API_URL);
+
+      if (response.data.status === "success") {
+        setVideos(response.data.videos);
       } else {
-        console.error('Error fetching videos: ', json.message);
+        console.error('Error fetching videos: ', response.data.message);
       }
     } catch (error) {
-      console.error('Error fetching videos: ', error, '+', itemId);
+      console.error('Error fetching videos: ', error);
     }
   };
 
@@ -70,7 +75,7 @@ export default StackScreen = ({ route }) => {
             data={videos}
             renderItem={({ item, index }) => (
               <Pressable onPress={() => setCurrentVideoIndex(index)}>
-                <Text style={[styles.video_list_item, index === currentVideoIndex && styles.video_list_item_selectedItem, index === currentVideoIndex && shouldPlay ]}>{item.capitulo}</Text>
+                <Text style={[styles.video_list_item, index === currentVideoIndex && styles.video_list_item_selectedItem, index === currentVideoIndex && shouldPlay]}>{item.capitulo}</Text>
               </Pressable>
             )}
             keyExtractor={(item) => item._id}

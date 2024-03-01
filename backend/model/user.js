@@ -1,6 +1,6 @@
 const {Schema, model} =require("mongoose");
 
-const UserShema =Schema({
+const UserSchema =Schema({
     name:{
         type:String,
         require:true
@@ -33,5 +33,5 @@ const UserShema =Schema({
     }
 })
 
-module.exports=model("User",UserShema,"users");
+module.exports=model("User",UserSchema,"users");
  

@@ -20,11 +20,13 @@ app.use(express.urlencoded({extended:true}))
 const UserRouters =require("./routes/user")
 const ColleccionRouters =require("./routes/colleccion")
 const RolesRouters =require("./routes/roles")
+const Security_questionsRouters =require("./routes/security_questions")
  
 
 app.use("/api/user",UserRouters)
 app.use("/api/colleccion",ColleccionRouters)
 app.use("/api/roles",RolesRouters)
+app.use("/api/security_questions",Security_questionsRouters)
  
 // prueba 
 app.get("/ruta-prueba" ,(req,res)=>{
