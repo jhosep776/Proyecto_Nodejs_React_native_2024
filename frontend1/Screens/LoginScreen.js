@@ -18,7 +18,7 @@ const LoginScreen = () => {
         const storedToken = await obtenerToken(); // Obtener el token almacenado
         if (storedToken) {
             console.log('Token guardado correctamente:', storedToken);
-            navigation.navigate('Home_Stack');
+            navigation.navigate('Home_');
             
         } else {
             console.log('No se pudo guardar el token.');

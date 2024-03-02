@@ -64,7 +64,7 @@ export default SettingsScreen = () => {
 
   const close = async () => {
     eliminarToken();
-    navigation.navigate('Login');
+    navigation.navigate("Login_");
 
   }
 

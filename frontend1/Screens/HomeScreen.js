@@ -99,23 +99,27 @@ export default HomeScreen = () => {
 
 
     const Stack_navigation = async (itemId) => {
-
-        const response = await axios.get(`${axios.defaults.baseURL}${API_URL3}`);
-        const storedToken = await obtenerToken();
-        configurarTokenEnAxios(storedToken);
-
-
-        console.log(storedToken)
-        console.log("respuesta" + response.data.result)
-        if (response.data.status == "success"  ) {
-            navigation.navigate("Stack", { itemId: itemId });
-        } else {
-            setModalMessage("No tiene el premium activo");
+        try {
+            const response = await axios.get(`${axios.defaults.baseURL}${API_URL3}`);
+            const storedToken = await obtenerToken();
+            configurarTokenEnAxios(storedToken);
+    
+            console.log(storedToken);
+            console.log("respuesta", response.data.result);
+    
+            if (response.data.status === "success" && response.data.result.length >=0) {
+                navigation.navigate("Stack", { itemId: itemId });
+            } else {
+                setModalMessage("Revise si tiene el premium activo");
+                setModalVisible(true);
+            }
+        } catch (error) {
+            console.error("Error al obtener los datos:", error);
+            setModalMessage("Error al obtener los datos");
             setModalVisible(true);
         }
-
     };
-
+    
 
     return (
         <>

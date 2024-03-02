@@ -54,7 +54,7 @@ const RegisterStackScreen = () => {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    navigation.navigate('Login_Stack');
+    navigation.navigate('Login');
   };
   const register_user = async () => {
     try {

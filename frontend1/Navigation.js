@@ -14,69 +14,84 @@ const Tab = createBottomTabNavigator();
 const StackNavigator = createNativeStackNavigator();
 
 
-
-function HomeStack() {
+function TabHome() {
     return (
-        <StackNavigator.Navigator
-            initialRouteName='Home_Stack'
+
+        <Tab.Navigator
+            initialRouteName='Home'
+            screenOptions={{
+                tabBarActiveTintColor: 'black',
+            }}
         >
-            <StackNavigator.Screen
-                name="Home_Stack"
+            <Tab.Screen
+                name='Home'
                 component={HomeScreen}
                 options={{
                     headerShown: false,
-
-                }}
-                screenOptions={{
-                    headerStyle: { backgroundColor: 'black' }, // Establece el fondo negro para la barra de navegación
-                    headerTintColor: 'white' // Establece el color del texto en la barra de navegación como blanco
+                    tabBarLabel: 'Inicio'
                 }}
             />
-            <StackNavigator.Screen
+
+            <Tab.Screen
+                name='Settings'
+                component={SettingsScreen}
+                options={{
+                    headerShown: false,
+                    tabBarLabel: 'Configuracion'
+                }}
+            />
+
+
+            <Tab.Screen
                 name='Stack'
                 component={StackScreen}
-
                 options={{
-                    headerTitle: '',
-                    headerStyle: {
-                        backgroundColor: 'black',
-
-                        height: 40,
-                    },
-                    headerTintColor: 'white',
-
-
-
-
-                    //   headerShown: false,
-
+                    headerShown: false,
+                    tabBarButton: () => null,
                 }}
             />
-        </StackNavigator.Navigator>
-    )
-}
-function LoginStack() {
-    return (
-        <StackNavigator.Navigator
-            initialRouteName='Login_Stack'
-        >
 
-            <StackNavigator.Screen
-                name="Login_Stack"
-                component={LoginScreen}
+            <Tab.Screen
+                name="Login_"
+                component={LoginStack}
                 options={{
                     headerShown: false,
                     tabBarStyle: { display: 'none' },
                     tabBarButton: () => null,
-
                 }}
+            />
 
+        </Tab.Navigator>
+
+
+    )
+}
+
+function LoginStack() {
+    return (
+        <StackNavigator.Navigator
+            initialRouteName='Login'
+        >
+            <StackNavigator.Screen
+                name='Login'
+                component={LoginScreen}
+                options={{
+                    headerShown: false,
+                    tabBarStyle: { display: 'none' },
+                }}
             />
 
             <StackNavigator.Screen
+                name='Home_'
+                component={TabHome}
+                options={{
+                    headerShown: false,
+                    tabBarStyle: { display: 'none' },
+                }}
+            />
+            <StackNavigator.Screen
                 name='Register_Stack'
                 component={RegisterStackScreen}
-
                 options={{
                     headerTitle: '',
                     headerStyle: {
@@ -90,48 +105,11 @@ function LoginStack() {
 
                 }}
             />
+
+
+
+
         </StackNavigator.Navigator>
-    )
-}
-function TabActions() {
-    return (
-
-        <Tab.Navigator
-            initialRouteName='HomeTab_Stack'
-            screenOptions={{
-                tabBarActiveTintColor: 'black',
-                tabBarStyle: { backgroundColor: 'white' }
-
-            }}
-        >
-            <Tab.Screen
-                name='Login'
-                component={LoginStack}
-                options={{
-                    headerShown: false,
-                    tabBarStyle: { display: 'none' },
-                    tabBarButton: () => null,
-
-                }}
-            />
-
-            <Tab.Screen
-                name='HomeTab_Stack'
-                component={HomeStack}
-                options={{
-                    headerShown: false,tabBarLabel: 'Inicio'
-                }}
-            />
-            <Tab.Screen
-                name='Settings'
-                component={SettingsScreen}
-                options={{
-                    headerShown: false, tabBarLabel: 'Mis datos'
-                }}
-            />
-        </Tab.Navigator>
-
-
     )
 }
 
@@ -153,7 +131,9 @@ export default function Navigation() {
     }, []);
     return (
         <NavigationContainer >
-            {isTokenValid ? <TabActions /> : <LoginStack />}
+            {isTokenValid ? <TabHome/> : <LoginStack/>}
         </NavigationContainer>
     )
 }
+
+
