@@ -105,6 +105,32 @@ const list_id = async (req, res) => {
 }
 
 
+const list_id_user = async (req, res) => {
+
+    let userIdentity = req.user;
+
+    premium.find({ user: userIdentity.id })
+        .select('-created_at -__v')
+        .sort({ created_at: -1 })
+        .populate('user')
+        .then((result) => {
+            return res.status(200).json({
+                status: "success",
+                message: " listado de premiums",
+                result,
+            })
+
+        }).catch((error) => {
+            return res.status(400).json({
+                status: "error",
+                message: "Ocurrio un error",
+                error
+            })
+
+        });
+
+}
+
 const list = (req, res) => {
     premium.find()
         .select('-created_at -__v')
@@ -171,7 +197,8 @@ module.exports = {
     register,
     update,
     list_id,
-    list
+    list,
+    list_id_user
 
 
 }
