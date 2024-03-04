@@ -5,7 +5,7 @@ import { configurarTokenEnAxios, guardarToken, obtenerToken, eliminarToken } fro
 import { useNavigation } from '@react-navigation/native';
 import AlertModal from '../components/modal'; // Importa el componente del modal de alerta
 import axios from '../Client/Api'; // Importa Axios con la configuración de URL base
-
+import Accordion from '../components/accordion';
 
 
 export default SettingsScreen = () => {
@@ -72,43 +72,50 @@ export default SettingsScreen = () => {
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
         <Text style={styles.subtitulov2}>Configuración de usuario</Text>
-        <Pressable onPress={close} style={styles.button_L2} >
-          <Text style={styles.text_bL}>Cerrar Sesión</Text>
-        </Pressable>
+        
 
         <Text style={styles.subtitulo} selectable={true}>ID : {userData._id}</Text>
-        <TextInput
-          style={styles.textinput}
-          placeholder='Ingrese sus nombres'
-          value={userData.name}
-          onChangeText={text => setUserData(prevState => ({ ...prevState, name: text }))}
-        />
-        <TextInput
-          style={styles.textinput}
-          placeholder='Ingrese sus apellidos'
-          value={userData.surname}
-          onChangeText={text => setUserData(prevState => ({ ...prevState, surname: text }))}
-        />
-        <TextInput
-          style={styles.textinput}
-          placeholder='Ingrese su correo electrónico'
-          value={userData.email}
-          onChangeText={text => setUserData(prevState => ({ ...prevState, email: text }))}
-        />
 
-        <TextInput
-          style={styles.textinput}
-          placeholder='Cambiar contraseña'
-          value={userData.password}
-          onChangeText={text => setUserData(prevState => ({ ...prevState, password: text }))}
-        />
+        <View style={styles.container}>
+          <Accordion title="Actualizar datos">
+
+            <TextInput
+              style={styles.acordion_textinput}
+              placeholder='Ingrese sus nombres'
+              value={userData.name}
+              onChangeText={text => setUserData(prevState => ({ ...prevState, name: text }))}
+            />
+            <TextInput
+              style={styles.acordion_textinput}
+              placeholder='Ingrese sus apellidos'
+              value={userData.surname}
+              onChangeText={text => setUserData(prevState => ({ ...prevState, surname: text }))}
+            />
+            <TextInput
+              style={styles.acordion_textinput}
+              placeholder='Ingrese su correo electrónico'
+              value={userData.email}
+              onChangeText={text => setUserData(prevState => ({ ...prevState, email: text }))}
+            />
+
+            <TextInput
+              style={styles.acordion_textinput}
+              placeholder='Cambiar contraseña'
+              value={userData.password}
+              onChangeText={text => setUserData(prevState => ({ ...prevState, password: text }))}
+            />
 
 
-        <Pressable onPress={update} style={styles.button_L} >
-          <Text style={styles.text_bL}>Actualizar Datos</Text>
+            <Pressable onPress={update} style={styles.acordion_button} >
+              <Text style={styles.acordion_button_text}>Guardar cambios</Text>
+            </Pressable>
+
+          </Accordion>
+        </View>
+
+        <Pressable onPress={close} style={styles.button_settings} >
+          <Text style={styles.text_bL}>Cerrar Sesión</Text>
         </Pressable>
-
-
 
 
         <AlertModal

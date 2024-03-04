@@ -6,10 +6,11 @@ import { styles } from '../styles'
 import axios from '../Client/Api'; // Importa Axios con la configuración de URL base
 export default StackScreen = ({ route }) => {
   const { itemId } = route.params;
-  const API_URL = `http://192.168.100.15:3900/api/colleccion/buscar_capitulos/${itemId}`;
+  // const imageUrl = `${axios.defaults.baseURL} `;
+  const API_URL = `${axios.defaults.baseURL}/colleccion/buscar_capitulos/${itemId}`;
   const [videos, setVideos] = useState([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0); // Estado para rastrear el índice del video actual
-  const [videoUrl, setVideoUrl] = useState('http://192.168.100.15:3900/api/colleccion/media_vide/default.mp4');
+  const [videoUrl, setVideoUrl] = useState( `${axios.defaults.baseURL}/colleccion/media_vide/default.mp4 `);
   const [status, setStatus] = useState({});
   const [shouldPlay, setShouldPlay] = useState(false); // Nuevo estado para controlar la reproducción del video
 
@@ -21,7 +22,7 @@ export default StackScreen = ({ route }) => {
 
   useEffect(() => {
     if (videos.length > 0) {
-      setVideoUrl(`http://192.168.100.15:3900/api/colleccion/media_vide/${videos[currentVideoIndex].video}`);
+      setVideoUrl(`${axios.defaults.baseURL}/colleccion/media_vide/${videos[currentVideoIndex].video}`);
       setShouldPlay(true); // Comienza la reproducción automáticamente al cambiar el video
     }
   }, [currentVideoIndex]);

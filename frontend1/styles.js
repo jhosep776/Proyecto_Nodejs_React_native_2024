@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
-scroll:{
-  backgroundColor: 'black',
-},
+  scroll: {
+    backgroundColor: 'black',
+  },
   // login
   container: {
     flex: 1,
@@ -57,7 +57,7 @@ scroll:{
     backgroundColor: '#fff'
 
   },
-   
+
 
   button_L: {
     marginTop: 50,
@@ -334,7 +334,50 @@ scroll:{
     position: 'absolute',
     bottom: 0,
     width: '100%',
-  }
+  },
+  // acordion
+  acordion: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  acordion_textinput: {
+    textAlign: 'center',
+    // padding: 10,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+    height: 50,
+    marginTop: 20,
+    width: 290,
+    backgroundColor: '#fff'
+
+  },
+  acordion_button: {
+    marginTop: 20,
+    paddingTop: 15,
+    paddingHorizontal:92,
+    height: 50,
+    width: '100%',
+    backgroundColor: '#00bfff',
+    borderBottomEndRadius:30,
+    borderBottomLeftRadius:30,
+
+  },
+  acordion_button_text:{
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 15,
+  },
+  button_settings: {
+    marginTop: 15,
+    marginBottom: 15,
+    paddingTop: 15,
+    borderRadius: 30,
+    height: 50,
+    width: '40%',
+    backgroundColor: 'red'
+
+  },
 
 
 

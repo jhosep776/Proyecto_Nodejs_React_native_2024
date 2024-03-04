@@ -33,7 +33,7 @@ export default HomeScreen = () => {
     }, [text]);
 
     const getImageUrl = (fileName) => {
-        const imageUrl = `${axios.defaults.baseURL}${API_URL2}${fileName}`;;
+        const imageUrl = `${axios.defaults.baseURL}${API_URL2}${fileName}`;
         //   console.log('Imagen URL:', imageUrl);
         return imageUrl;
     };
@@ -107,7 +107,7 @@ export default HomeScreen = () => {
             console.log(storedToken);
             console.log("respuesta", response.data.result);
     
-            if (response.data.status === "success" && response.data.result.length >=0) {
+            if (response.data.status === "success" && response.data.result.length !=0) {
                 navigation.navigate("Stack", { itemId: itemId });
             } else {
                 setModalMessage("Revise si tiene el premium activo");
