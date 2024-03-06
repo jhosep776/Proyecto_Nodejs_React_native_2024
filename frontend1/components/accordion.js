@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#00bfff',
         paddingVertical: 15,
         paddingHorizontal: 82,
-        borderRadius: 30,
+        borderRadius: 10,
     },
     titulo1: {
         fontWeight: 'bold',

@@ -14,5 +14,6 @@ router.get("/list", check.auth,UserController.list);
 router.post("/premium", PremiumController.register);
 router.get("/premium/list", PremiumController.list);
 router.get("/premium/list_id",check.auth, PremiumController.list_id);
+router.get("/premium/list_id_user",check.auth, PremiumController.list_id_user);
 router.put("/premium/update/:id", PremiumController.update);
 module.exports =router;

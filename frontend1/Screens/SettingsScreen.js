@@ -1,23 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, TouchableOpacity, View, Pressable, TextInput, Text } from 'react-native';
+import { FlatList, ScrollView, TouchableOpacity, View, Pressable, TextInput, Text } from 'react-native';
 import { styles } from '../styles';
 import { configurarTokenEnAxios, guardarToken, obtenerToken, eliminarToken } from '../Client/Auth'
 import { useNavigation } from '@react-navigation/native';
 import AlertModal from '../components/modal'; // Importa el componente del modal de alerta
 import axios from '../Client/Api'; // Importa Axios con la configuración de URL base
 import Accordion from '../components/accordion';
+import AlertModalContent from '../components/modal_content';
 
 
 export default SettingsScreen = () => {
-  const API_URL = '/user/list'; // Ruta relativa de la API
-  const API_URL2 = '/user/update'; // Ruta relativa de la API
-  const [userData, setUserData] = useState({});
+  const API_URL = '/user/list'; // Ruta relativa de la API listado de datos del usuario
+  const API_URL2 = '/user/update'; // Ruta relativa de la API Actualizacion de datos del usuario
+  const API_URL3 = '/user/premium/list_id_user'; // Ruta relativa de la API listado de premium de usuarios
+  const API_URL4 = '/user/premium/list_id'; // Ruta relativa de la API listado
 
+
+  const [userData, setUserData] = useState({});
+  const [premiumData, setPremiumData] = useState({});
+  const [activoData, setActivoData] = useState({});
   //modal
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
+  const [modalcontentVisible, setModalContentVisible] = useState(false);
   const navigation = useNavigation();
+
+
+  // modal content
+  const openModal = () => {
+    setModalContentVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalContentVisible(false);
+  };
+
+
+
 
   const handleCloseModal = () => {
     setModalVisible(false);
@@ -25,9 +45,19 @@ export default SettingsScreen = () => {
   };
 
   useEffect(() => {
-    list_data(); // Obtener datos del usuario al montar el componente
+    list_data();
+    list_data_premium();
+    premium_activo();// Obtener datos del usuario al montar el componente
   }, []);
 
+  const premium_activo = async () => {
+    const response = await axios.get(`${axios.defaults.baseURL}${API_URL4}`);
+    const storedToken = await obtenerToken();
+    configurarTokenEnAxios(storedToken);
+    const responseResult = response.data.result;
+    setActivoData(responseResult); // Establece todos los elementos, no solo el primero
+
+  }
   const list_data = async () => {
     try {
       let url = `${axios.defaults.baseURL}${API_URL}`;
@@ -41,6 +71,67 @@ export default SettingsScreen = () => {
       console.error('Error al obtener datos del usuario:', error);
     }
   }
+
+  const list_data_premium = async () => {
+    try {
+      let url = `${axios.defaults.baseURL}${API_URL3}`;
+      const storedToken = await obtenerToken();
+      configurarTokenEnAxios(storedToken);
+      const response = await axios.get(url);
+      const premiumDataFromApi = response.data.result;
+      //  console.log(premiumDataFromApi)
+      setPremiumData(premiumDataFromApi);
+
+    } catch (error) {
+      console.error('Error al obtener datos del usuario:', error);
+    }
+  }
+
+  const renderItemPremium = ({ item }) => {
+
+    return (
+
+      <View style={styles.Settings_rowContainer}>
+
+        <View style={styles.Settings_columContainer}>
+
+          <Text style={styles.Settings_text_t}>ID: {item._id}  </Text>
+          <Text style={styles.Settings_text_t}>Inicio:{item.fech_ini} </Text>
+          <Text style={styles.Settings_text_t}>Fin:{item.fech_fin} </Text>
+        </View>
+
+      </View>
+
+
+    )
+
+  }
+
+  const renderItemPremiumActivo = () => {
+    const item = activoData[0]; // Acceder al primer elemento del arreglo
+
+    if (item) {
+      return (
+        <View style={styles.Settings_rowContainer}>
+          <View style={styles.Settings_columContainer}>
+
+            <Text style={styles.Settings_text_t}>ID:    {item._id}</Text>
+            <Text style={styles.Settings_text_t}>Desde: {item.fech_ini}</Text>
+            <Text style={styles.Settings_text_t}>Hasta: {item.fech_fin}</Text>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.Settings_rowContainer}>
+          <View style={styles.Settings_columContainer}>
+            <Text style={styles.Settings_text_t2}>No tiene Premium Activo</Text>
+          </View>
+        </View>
+      );
+    }
+  }
+
   const update = async () => {
     try {
       let url = `${axios.defaults.baseURL}${API_URL2}`;
@@ -67,18 +158,17 @@ export default SettingsScreen = () => {
     navigation.navigate("Login_");
 
   }
+  const list_prem = () => {
+
+  }
 
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
         <Text style={styles.subtitulov2}>Configuración de usuario</Text>
-        
-
         <Text style={styles.subtitulo} selectable={true}>ID : {userData._id}</Text>
-
         <View style={styles.container}>
           <Accordion title="Actualizar datos">
-
             <TextInput
               style={styles.acordion_textinput}
               placeholder='Ingrese sus nombres'
@@ -104,20 +194,42 @@ export default SettingsScreen = () => {
               value={userData.password}
               onChangeText={text => setUserData(prevState => ({ ...prevState, password: text }))}
             />
-
-
             <Pressable onPress={update} style={styles.acordion_button} >
               <Text style={styles.acordion_button_text}>Guardar cambios</Text>
             </Pressable>
-
           </Accordion>
         </View>
+        <View style={{ flex: 1, backgroundColor: 'red', paddingTop: 10, marginTop: 15, borderRadius: 10 }}>
+
+          <Pressable onPress={openModal}   >
+            <Text style={styles.Settings_text_t2}>Estado del premium</Text>
+          </Pressable>
+
+          {renderItemPremiumActivo()}
+
+        </View>
+
+
 
         <Pressable onPress={close} style={styles.button_settings} >
           <Text style={styles.text_bL}>Cerrar Sesión</Text>
         </Pressable>
+        <AlertModalContent
+          visible={modalcontentVisible}
+          content={
 
-
+            <View style={styles.Settings_alert_content}>
+              <Text style={styles.text_bL}>Listado de premiums adquiridos</Text>
+              <FlatList
+                data={premiumData}
+                renderItem={renderItemPremium}
+                keyExtractor={(item) => item._id}
+                nestedScrollEnabled={true} // Habilitar el desplazamiento anidado
+              />
+            </View>
+          }
+          onClose={closeModal}
+        />
         <AlertModal
           visible={modalVisible}
           message={modalMessage} // Mensaje que muestra el modal
@@ -127,7 +239,22 @@ export default SettingsScreen = () => {
 
 
       </View>
+
+
     </ScrollView>
+
 
   )
 }
+/*
+  <View style={{ flex: 3, backgroundColor: 'red' }}>
+        <FlatList
+          data={premiumData}
+          renderItem={renderItemPremium}
+          keyExtractor={(item) => item._id}
+          nestedScrollEnabled={true} // Habilitar el desplazamiento anidado
+        />
+
+      </View>
+
+*/

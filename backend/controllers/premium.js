@@ -80,7 +80,7 @@ const list_id = async (req, res) => {
     })
         .select('-created_at -__v')
         .sort({ created_at: -1 })
-        .populate('user')
+       // .populate('user')
         .then((result) => {
             return res.status(200).json({
                 status: "success",
@@ -112,7 +112,7 @@ const list_id_user = async (req, res) => {
     premium.find({ user: userIdentity.id })
         .select('-created_at -__v')
         .sort({ created_at: -1 })
-        .populate('user')
+       // .populate('user')
         .then((result) => {
             return res.status(200).json({
                 status: "success",

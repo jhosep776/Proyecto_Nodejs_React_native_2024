@@ -355,15 +355,15 @@ export const styles = StyleSheet.create({
   acordion_button: {
     marginTop: 20,
     paddingTop: 15,
-    paddingHorizontal:92,
+    paddingHorizontal: 92,
     height: 50,
     width: '100%',
     backgroundColor: '#00bfff',
-    borderBottomEndRadius:30,
-    borderBottomLeftRadius:30,
+    borderBottomEndRadius: 30,
+    borderBottomLeftRadius: 30,
 
   },
-  acordion_button_text:{
+  acordion_button_text: {
     color: 'white',
     textAlign: 'center',
     fontSize: 15,
@@ -378,7 +378,94 @@ export const styles = StyleSheet.create({
     backgroundColor: 'red'
 
   },
+  // Setting Screen // premium
+  Settings_rowContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    marginTop:10,
+     
+    padding: 5,
+    borderTopWidth: 1,
+    borderTopColor: 'lightsteelblue',
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightsteelblue',
 
+    borderLeftWidth: 1,
+    borderLeftColor: 'lightsteelblue',
+    borderRightWidth: 1,
+    borderRightColor: 'lightsteelblue',
+    borderRadius: 10,
+    height: 100,
+    width:  300,
+    backgroundColor:'#171718'
+  },
+  Settings_columContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    padding: 4,
+     alignItems:'center'
+    /*
+        borderTopWidth: 1,
+        borderTopColor: 'lightsteelblue',
+        borderBottomWidth: 1,
+        borderBottomColor: 'lightsteelblue',
+    
+        //borderLeftWidth: 5,
+        //borderLeftColor: 'green',
+        borderRightWidth: 1,
+        borderRightColor: 'lightsteelblue',
+        borderRadius: 10,*/
+    //height: 165,
+  },
+  Settings_text_t2: {
+     
+    paddingTop: 2,
+    paddingBottom:2,
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 15,
+    fontWeight: 'bold',
+    //backgroundColor: 'green',
+
+  },
+  Settings_text_t: {
+     
+    paddingTop: 2,
+    paddingBottom:2,
+    color: 'white',
+    textAlign: 'left',
+    fontSize: 15,
+    fontWeight: 'bold',
+    //backgroundColor: 'green',
+
+  },
+  Settings_button: {
+     
+    
+    paddingTop: 15,
+    paddingHorizontal: 92,
+    height: 50,
+    width: '100%',
+    backgroundColor: '#00bfff',
+    borderBottomEndRadius: 10,
+    borderBottomLeftRadius: 10,
+
+  },
+  Settings_button_text: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 15,
+
+  },
+  Settings_alert_content:{
+    flex:1,
+    width:'99%',
+     
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 
 
 });
